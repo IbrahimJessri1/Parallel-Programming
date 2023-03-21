@@ -9,22 +9,22 @@ import java.util.concurrent.ForkJoinPool;
 
 public class ArrayElementTest extends TestCase {
 
-    private int size;
-    private int target;
-    private ArrayElement array;
-    private static int[] arr = null;
-    private static int range;
+    private int _size;
+    private int _target;
+    private ArrayElement _array;
+    private static int[] _arr = null;
+    private static int _range;
 
 
     @Before
     public void setUp() {
-        size = 1000_000_000;
-        range = 100_000;
-        target = 10;
-        if(arr == null)
-            arr = randomArray(size, range);
-        array = new ArrayElement(target, 0, size - 1);
-        array.setArray(arr);
+        _size = 1000_000_000;
+        _range = 100_000;
+        _target = 10;
+        if(_arr == null)
+            _arr = randomArray(_size, _range);
+        _array = new ArrayElement(_target, 0, _size - 1);
+        _array.setArray(_arr);
     }
 
 
@@ -40,27 +40,27 @@ public class ArrayElementTest extends TestCase {
     @Test
     public void testArrayCountSeq() {
         long start = System.currentTimeMillis();
-        array.computeSeq();
+        _array.computeSeq();
         long endTimer = System.currentTimeMillis() - start;
-        System.out.printf("Sequential Time execution for Random Array of size %d is %d ms, count of %d is %d\n", size, endTimer, target, array.count);
+        System.out.printf("Sequential Time execution for Random Array of size %d is %d ms, count of %d is %d\n", _size, endTimer, _target, _array.count);
     }
 
     @Test
     public void testArrayCountPP() {
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism","7");
         long start = System.currentTimeMillis();
-        ForkJoinPool.commonPool().invoke(array);
+        ForkJoinPool.commonPool().invoke(_array);
         long endTimer = System.currentTimeMillis() - start;
-        System.out.printf("Parallel Time execution for Random Array of size %d is %d ms, count of %d is %d\n", size, endTimer, target, array.count);
+        System.out.printf("Parallel Time execution for Random Array of size %d is %d ms, count of %d is %d\n", _size, endTimer, _target, _array.count);
     }
 
     @Test
     public void testArraySumStreamSeq() {
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism","7");
         long start = System.currentTimeMillis();
-        array.computeStreamSeq();
+        _array.computeStreamSeq();
         long endTimer = System.currentTimeMillis() - start;
-        System.out.printf("Sequential Stream Time execution for Random Array of size %d is %d ms, count of %d is %d\n", size, endTimer, target, array.count);
+        System.out.printf("Sequential Stream Time execution for Random Array of size %d is %d ms, count of %d is %d\n", _size, endTimer, _target, _array.count);
     }
 
 
@@ -68,9 +68,9 @@ public class ArrayElementTest extends TestCase {
     public void testArraySumStreamPP() {
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism","7");
         long start = System.currentTimeMillis();
-        array.computeStreamPP();
+        _array.computeStreamPP();
         long endTimer = System.currentTimeMillis() - start;
-        System.out.printf("Parallel Stream Time execution for Random Array of size %d is %d ms, count of %d is %d\n", size, endTimer, target, array.count);
+        System.out.printf("Parallel Stream Time execution for Random Array of size %d is %d ms, count of %d is %d\n", _size, endTimer, _target, _array.count);
     }
 
     public void resource() {
